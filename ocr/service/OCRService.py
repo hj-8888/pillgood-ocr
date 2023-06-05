@@ -28,7 +28,7 @@ def processOCRService(image_data):
     image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
 
     # 이미지 밝기 판단
-    image = decisionBright(image_data);
+    image = decisionBright(image);
 
     # 이미지 전처리
     image = imagePreProcess(image);
