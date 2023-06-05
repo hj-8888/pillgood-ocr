@@ -13,6 +13,7 @@ def findPhoneNumber(text_list):
     # 정규 표현식을 사용하여 요소 필터링
     for text in text_list:
         if re.match(pattern, text):
+            print("병원 전화번호 추출 : {}".format(text))
             return text
 
     # 결과 출력
@@ -77,6 +78,7 @@ def findDiseaseCode(text_list):
     # 정규 표현식을 사용하여 요소 필터링 및 반환
     for text in disease_word_list:
         if re.match(pattern, text):
+            print("질병분류기호 추출 : {}".format(text))
             return text
     # 결과 없음
     return None
@@ -91,6 +93,7 @@ def findHospital(text_list):
 
     for text in text_list:
         if re.match(pattern, text):
+            print("병원 이름 추출 : {}".format(text))
             return text
 
     return ''
@@ -123,6 +126,9 @@ def findTakePillTime(takeCount):
 
     return ['']
 
+def is_numeric_string(string):
+    return string.isdigit()
+
 # 리스트에서 약 판별
 def findPillName(text_list):
 
@@ -134,40 +140,45 @@ def findPillName(text_list):
 
     result = []
     for index, item in enumerate(find_fill):
-        target = False
+        isTakeCount = False
         target_index = item['index']
         takeCount = 1
         takeDay = 1
 
+        print(text_list[target_index:target_index+4])
+
         # text_list에 약 이 발견되면 숫자(안나올 수 있음) 영어 target1 target2에서 tartget 2개를 가져와야 됨
-        for i in range(target_index+1, target_index+4):
+        for i in range(target_index+1, target_index+3):
 
-            if contains_english(text_list[i]):
-                target = True
-                print("target 영어", text_list[i])
-                continue
-
-            if target:
-                takeCount = text_list[i]
-                print("takeCount", takeCount)
-
-                result.append(
-                    {
-                        'pillName': item['pill'],
-                        'takeCount': takeCount,
-                        'takeDay': takeDay,
-                        'takePillTimeList': findTakePillTime(takeCount)
-                    }
-                )
+            if takeDay != 1 and not is_numeric_string(text_list[i]):
                 break
 
-            if target and takeCount != 1:
+            if is_numeric_string(text_list[i]) and takeDay != 1:
+                takeCount = takeDay
                 takeDay = text_list[i]
-                print("takeCount", takeDay)
+                break
+
+            if not isTakeCount and is_numeric_string(text_list[i]):
+                takeCount = text_list[i]
+                isTakeCount = True
+                continue
+
+            if isTakeCount and is_numeric_string(text_list[i]):
+                takeDay = text_list[i]
+                continue
 
 
-            print()
-            print()
+        print("takeCount: {}  takeDay: {}".format(takeCount, takeDay))
+        print()
+        result.append(
+            {
+                'pillName': item['pill'],
+                'takeCount': takeCount,
+                'takeDay': takeDay,
+                'takePillTimeList': findTakePillTime(takeCount)
+            }
+        )
+
 
     print(result)
 
@@ -198,5 +209,3 @@ def ocrProcess(image):
         print('{0}: {1}'.format(index, text))
 
     return text_list
-
-

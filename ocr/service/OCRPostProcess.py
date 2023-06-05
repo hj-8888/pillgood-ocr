@@ -78,13 +78,15 @@ def find_similar_person_names(data_set, query):
     return similar_person_name
 
 
-# 글자 범위를 다르게한 유사도 검사 연속 수행 함수
+# 글자 범위가 다른 유사도 검사 연속 수행 함수( 밀리그램 제거 또는 포함 )
 def find_similar_pill_names(data_set, query):
 
     # 유사한 알약 이름 출력
     similar_pill_name = get_similar_pill_names(query, data_set, 1)
     similar_pill_name_similarities = np.max(similar_pill_name['similarities'])
     similar_pill_name_index_list = similar_pill_name['index']
+    print(query)
+    print(similar_pill_name['name'], similar_pill_name['similarities'])
 
     if similar_pill_name_similarities >= 0.99:
         return similar_pill_name
@@ -94,7 +96,8 @@ def find_similar_pill_names(data_set, query):
 
     new_similar_pill_name = get_similar_range_pill_names(query, new_data_set, similar_pill_name_index_list, 2)
     new_similar_pill_name_similarities = np.max(new_similar_pill_name['similarities'])
-
+    print(similar_pill_name['name'], similar_pill_name['similarities'])
+    print()
 
     if similar_pill_name_similarities > new_similar_pill_name_similarities:
         return similar_pill_name
@@ -306,7 +309,7 @@ def start_similar_pill_names(data_set, ocr_data_list):
                 pill_num = korea4_similar_pill['index'][0]
 
 
-        if max_similaritie < 0.35:
+        if max_similaritie < 0.46:
             find_pill_name = ''
 
         # print("텍스트 '{0}'과 가장 유사한 알약 = {1} 유사도={2}".format(data, find_pill_name, max_similaritie))
@@ -328,6 +331,5 @@ def ocrPostProcess(text_list):
     for index, item in enumerate(find_data):
         if item != "":
             result.append({"index": index, 'pill': item})
-
     return result
 

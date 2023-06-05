@@ -28,10 +28,11 @@ def processOCRService(image_data):
     image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
 
     # 이미지 밝기 판단
-    image = decisionBright(image);
+    image = decisionBright(image_data);
 
     # 이미지 전처리
     image = imagePreProcess(image);
+    cv2.imwrite('C:/Users/xcxc4/Desktop/pillgood-ocr/ocr/ocr_image/imagePreProcess.png', image)
 
     # 이미지 텍스트 추출
     text_list = ocrProcess(image)
@@ -39,4 +40,6 @@ def processOCRService(image_data):
     # OCR 처리
     result_data = ocdDataFormat(text_list)
 
+    print(result_data)
     return result_data
+

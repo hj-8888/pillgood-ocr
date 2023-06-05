@@ -13,7 +13,6 @@ def colorToBlackBinary(image):
     binary_image = cv2.adaptiveThreshold(
         gray_image, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY_INV, 501, 30
     )
-    cv2.imwrite('../ocr_imag/BlackAdaptiveBinary.png', binary_image)
 
     # 구조화 요소 (커널) 생성
     kernel = np.ones((2, 2), np.uint8)
@@ -24,7 +23,7 @@ def colorToBlackBinary(image):
     # 블러 처리
     blurred_image = cv2.GaussianBlur(dilate_image, (3, 3), 0)
 
-    return dilate_image
+    return blurred_image
 
 def colorToWhiteBinary(image):
     brightness = 0  # 조정할 밝기 값
@@ -74,13 +73,19 @@ def croppedImage(dilate_image, image):
                 max_y = y + h
 
     cropped_image = image[min_y:max_y, min_x:max_x]
+
     return cropped_image
 
 def imageProcess(image):
 
     dilate_image = colorToBlackBinary(image)
+    cv2.imwrite('C:/Users/xcxc4/Desktop/pillgood-ocr/ocr/ocr_image/dilate_image.png', dilate_image)
+
     cropImage = croppedImage(dilate_image, image)
+    cv2.imwrite('C:/Users/xcxc4/Desktop/pillgood-ocr/ocr/ocr_image/cropImage.png', cropImage)
+
     finalImage = colorToWhiteBinary(cropImage)
+    cv2.imwrite('C:/Users/xcxc4/Desktop/pillgood-ocr/ocr/ocr_image/finalImage.png', finalImage)
 
     return finalImage
 

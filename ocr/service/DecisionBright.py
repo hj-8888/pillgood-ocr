@@ -32,11 +32,13 @@ def decisionBright(image):
     if(bright > 170):
         brightness = -30
         adjusted_image = adjust_brightness(image, brightness)
+        cv2.imwrite('C:/Users/xcxc4/Desktop/pillgood-ocr/ocr/ocr_image/adjusted_image.png', adjusted_image)
 
         return adjusted_image
     elif(bright < 130):
         brightness = 30
         adjusted_image = adjust_brightness(image, brightness)
+        cv2.imwrite('C:/Users/xcxc4/Desktop/pillgood-ocr/ocr/ocr_image/adjusted_image.png', adjusted_image)
 
         return adjusted_image
 
