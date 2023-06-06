@@ -39,6 +39,7 @@ def processOCRService(image_data):
 
     # OCR 처리
     result_data = ocdDataFormat(text_list)
+    # test
 
     print(result_data)
     return result_data
